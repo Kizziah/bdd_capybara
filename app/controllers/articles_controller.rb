@@ -8,7 +8,7 @@ class ArticlesController < ApplicationController
   end
 
   def home
-    
+    @players = User.all
   end
 
   # GET /articles/1
