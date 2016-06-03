@@ -14,3 +14,5 @@ def log_in(email, password)
   fill_in "Password", with: password
   click_button "Log in"	
 end
+
+# create_articles()

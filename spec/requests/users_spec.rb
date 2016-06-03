@@ -15,10 +15,10 @@ RSpec.describe "User", type: :request do
 	  	scenario "with valid email and incorrect password", js: true do
 	    	sign_up("user@test.com", "hello12")
 	    	expect(page).to_not have_text "You have signed up successfully"
-	  	end
+	  	end      
   end
 
-  feature "Existing User" do
+  feature "Existing User not loggin in" do
     before(:each) do 
     	@u = FactoryGirl.create(:user)	
     end
@@ -38,22 +38,43 @@ RSpec.describe "User", type: :request do
 			expect(page).to have_content "Signed in successfully"
     end
 
-    scenario "signs up with valid email and invalid password", js: true do
+    scenario "logs in with valid email and invalid password", js: true do
     	log_in(@u.email, @u.password+"m")
     	expect(page).to_not have_text "Signed in successfully"
   	end
 
-  	scenario "signs up with invalid email and correct password", js: true do
+  	scenario "logs in with invalid email and correct password", js: true do
     	log_in("#{@u.email}M", @u.password)
     	expect(page).to_not have_text "Signed in successfully"
   	end
+
+    scenario "signs up with invalid email and correct password", js: true do
+      log_in("#{@u.email}M", @u.password)
+      expect(page).to_not have_text "Signed in successfully"
+    end
+
   end
 
-
-  feature "Admin User" do
-    scenario "signs in as admin", js: true do
-      
+  feature "Admin" do
+    describe "when admin" do
+      before(:all) do
+        @admin = FactoryGirl.create(:admin)
+      end      
+      it "sees Admin options on homepage", js: true do
+        log_in(@admin.email, @admin.password)
+        expect(page).to have_xpath('//a', text: "Admin for Articles")        
+      end
     end
+    describe "when non admin" do
+      before(:all) do
+        @user = FactoryGirl.create(:user)
+      end
+
+      it "sees Admin options on homepage", js: true do
+        log_in(@user.email, @user.admin)
+        expect(page).to_not have_xpath('//a', text: "Admin for Articles")
+      end
+    end    
   end
 
 end

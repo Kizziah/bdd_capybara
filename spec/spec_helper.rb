@@ -7,7 +7,6 @@ require 'capybara/rspec'
 require 'factory_girl.rb'
 require 'support/user.rb'
 
-# Set which broswer selenium uses.
 # Capybara.register_driver :selenium do |app|
 #   Capybara::Selenium::Driver.new(app, :browser => :safari)
 # end
@@ -36,13 +35,7 @@ RSpec.configure do |config|
   # Disables the rspec-rails standard behaviour of wrapping each of your test examples within a transaction  
   # your DatabaseCleaner configuration will not work if this has not been updated
   config.use_transactional_fixtures = false
-  config.infer_spec_type_from_file_location!
-  config.filter_rails_from_backtrace!
-  config.filter_run :focus
-  config.run_all_when_everything_filtered = true
-  config.example_status_persistence_file_path = "spec/examples.txt"
-  config.disable_monkey_patching!
-  config.profile_examples = 10
+  
   config.order = :random
   
   config.expect_with :rspec do |expectations|
